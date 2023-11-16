@@ -1,0 +1,108 @@
+
+@font-face
+{
+    font-family:open_sansregular;
+    src:url(../fonts/GEDinarOne-Regular.otf) format('opentype');
+    font-weight:400;
+    font-style:normal;
+}
+@font-face
+{
+    font-family:open_sansbold;
+    src:url(../fonts/GEDinarOne-Bold.otf) format('opentype');
+    font-style:normal;
+}
+@font-face
+{
+    font-family:open_sanssemibold;
+    src:url(../fonts/GEDinarOne-Medium.otf) format('opentype');
+    font-weight:600;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+ {
+    font-family: 'Cairo', sans-serif !important;
+
+}
+.layout-page,.dropdown-item {
+    direction: rtl;
+    text-align: right;
+
+}
+.content-wrapper {
+
+    position: relative;
+    right: 264px;
+}
+.form-check .form-check-input {
+    float: right;
+    margin-right: -1.7em;
+    margin-left: unset;
+}
+.table.table-flush-spacing thead tr > td:first-child, .table.table-flush-spacing tbody tr > td:first-child {
+    padding-right: 0;
+}
+.form-check {
+
+    padding-right: 1.7em;
+    padding-left: unset;
+}
+.bg-menu-theme.menu-vertical .menu-sub > .menu-item > .menu-link:before{
+    right: 1.35rem;
+    left: unset;
+}
+.menu-vertical .menu-sub .menu-link {
+    padding-right: 2.875rem;
+    padding-left: 0;
+}
+.menu-vertical .menu-item .menu-toggle::after {
+    left: 1rem;
+    right: unset;
+}
+.menu-icon {
+    margin-left: 0.5rem;
+    margin-right: unset;
+}
+
+
+.switch .switch-input ~ .switch-label {
+    padding-right: 3rem;
+    padding-left: 0;
+}
+html:not([dir=rtl]) .ms-auto {
+    margin-right: auto !important;
+    margin-left: 0 !important;
+}
+.dropdown-menu-end[data-bs-popper] {
+    left: 0;
+    right: auto;
+  }
+/* response */
+@media (min-width: 1200px)
+{
+    .layout-menu-fixed .layout-menu, .layout-menu-fixed-offcanvas .layout-menu {
+        right: 0;
+        left: unset;
+        direction: rtl;
+        text-align: right;
+    }
+    .layout-navbar-fixed:not(.layout-menu-collapsed) .layout-content-navbar:not(.layout-without-menu) .layout-navbar, .layout-menu-fixed.layout-navbar-fixed:not(.layout-menu-collapsed) .layout-content-navbar:not(.layout-without-menu) .layout-navbar, .layout-menu-fixed-offcanvas.layout-navbar-fixed:not(.layout-menu-collapsed) .layout-content-navbar:not(.layout-without-menu) .layout-navbar {
+        right: 17.25rem;
+        left: unset;
+    }
+
+}
+@media (min-width: 992px)
+{
+    html:not([dir=rtl]) .me-lg-5 {
+        margin-left: 3rem !important;
+        margin-right: unset !important;
+    }
+
+}
