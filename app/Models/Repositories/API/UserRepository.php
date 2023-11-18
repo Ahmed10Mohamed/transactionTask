@@ -22,7 +22,7 @@ class UserRepository
     }
     public function update_profile($request){
         $data = $request->except(['_token']);
-        $client  = $this->find_client(4);
+        $client  = $this->find_client(api()->id);
 
        DB::beginTransaction();
        try {
@@ -53,7 +53,7 @@ class UserRepository
                     $data['email_verified_at'] = date(('Y-m-d H:i:s'));
                     $user_login =  User::create($data);
                     $access_token = $user_login->createToken('TranactionTask')->accessToken;
-                    $moredata['access_token']=$access_token->token;
+                    $moredata['access_token']=$access_token;
                      $user_login->update($moredata);
 
                 DB::commit();
@@ -75,7 +75,8 @@ class UserRepository
             }else if(Hash::check($request->password, $client->password))
             {
                 $access_token = $client->createToken('TranactionTask')->accessToken;
-                $moredata['access_token']=$access_token->token;
+
+                $moredata['access_token']=$access_token;
                 $client->update($moredata);
                 $user_data = new ClientResource($client);
                 return $user_data;

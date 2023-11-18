@@ -21,7 +21,6 @@ Route::group(['namespace' => 'App\Http\Controllers\API', 'middleware' => 'APISet
 
     Route::post('register', 'AuthController@register');
     Route::post('login', 'AuthController@login');
-    Route::get('MyTranaction', 'TranactionController@my_tranaction');
 
 
     Route::group(['middleware' => 'auth:api'], function () {
@@ -29,10 +28,8 @@ Route::group(['namespace' => 'App\Http\Controllers\API', 'middleware' => 'APISet
             Route::post('update_profile', 'AuthController@update_profile');
 
             // ************  Tranaction  ***************//
-            // Route::get('MyTranaction', 'TranactionController@my_tranaction');
+            Route::get('MyTranaction', 'TranactionController@my_tranaction');
 
-                        // ************  Report  ***************//
-             Route::get('User-Report', 'RentalController@section');
 
 
         });

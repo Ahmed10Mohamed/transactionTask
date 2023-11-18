@@ -13,8 +13,8 @@ class TranactionController extends Controller
     public function __construct(UserTranactionRepository $tranactionRepository){
         $this->tranactionRepository = $tranactionRepository;
     }
-    public function my_tranaction(Request $request){
-        $data = UserTranactionResource::collection($this->tranactionRepository->user_tranactions($request->user_id));
+    public function my_tranaction(){
+        $data = UserTranactionResource::collection($this->tranactionRepository->user_tranactions());
         return response()->json(['success'=>true,'data'=>$data,'code'=>200]);
     }
 }

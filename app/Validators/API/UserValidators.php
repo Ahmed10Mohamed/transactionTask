@@ -60,7 +60,7 @@ class UserValidators
             $messages = [
                 'name.required' =>translate('Please Enter Your full name'),
                 'phone.required' =>translate('Please Enter Your phone'),
-                'phone.unique' =>translate('This Phone Arcady Used Before'),
+                'phone.unique' =>translate('This Phone Already Used Before'),
                 'phone.numeric' =>translate('phone should to be number'),
                 'phone.digits' =>translate('phone should to be 12 char'),
 
