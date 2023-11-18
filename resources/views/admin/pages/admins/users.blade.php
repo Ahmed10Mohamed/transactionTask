@@ -26,7 +26,7 @@
                         <tr>
                             <th>#</th>
                             <th>{{translate('User Name')}}</th>
-                            <th>{{translate('E-Mail')}}</th>
+                            <th>{{translate('Phone')}}</th>
                             <th>{{translate('IS VERIFIED')}}</th>
                             <th>{{translate('Created At')}}</th>
 
@@ -37,7 +37,7 @@
                                 <tr>
                                     <td >{{$loop->iteration}}</td>
                                     <td>{{$user->name}}</td>
-                                    <td>{{$user->email}}</td>
+                                    <td>{{$user->phone}}</td>
                                     <td>
                                         @if($user->email_verified_at !== null)
                                             <i class="fa fa-check-circle" style="color:green"></i>
