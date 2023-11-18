@@ -41,7 +41,26 @@
             </li>
            <!--End Users -->
 
+            <!-- transaction -->
+            <li class="menu-item @if($class == 'all_transaction' || $class == 'create_transaction') open @endif">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons ti ti-layout-grid"></i>
+                <div data-i18n="{{translate('Transaction')}}">{{translate('Transaction')}}</div>
+              </a>
+              <ul class="menu-sub">
+              <li class="menu-item @if($class == 'create_transaction') active @endif">
+                  <a href="{{route('Transaction.Transaction.create')}}" class="menu-link">
+                    <div data-i18n="{{translate('create')}}">{{translate('create')}}</div>
+                  </a>
+                </li>
+                <li class="menu-item @if($class == 'all_transaction') active @endif">
+                  <a href="{{route('Transaction.Transaction.index')}}" class="menu-link">
+                    <div data-i18n="{{translate('show')}}">{{translate('show')}}</div>
+                  </a>
+                </li>
 
+              </ul>
+            </li>
 
             <!-- end -->
 
@@ -74,7 +93,7 @@
                       <div data-i18n="{{translate('Langauge')}}">{{translate('Langauge')}}</div>
                     </a>
                   </li>
-                 
+
 
                 </ul>
               </li>

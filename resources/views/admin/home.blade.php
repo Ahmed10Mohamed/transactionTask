@@ -9,71 +9,41 @@
 
     <div class="container-xxl flex-grow-1 container-p-y">
       <div class="row">
-        <!-- Sales last year -->
-        <div class="col-xl-2 col-md-4 col-6 mb-4">
-          <div class="card">
-            <div class="card-header pb-0">
-              <h5 class="card-title mb-0">{{translate('Signed Document')}}</h5>
-              <small class="text-muted">{{translate('Last Year')}}</small>
+        <div class="col-xl-8 col-md-8 col-12 mb-4">
+            <div class="row">
+                                <!-- Sales last year -->
+                        @for ($i=1; $i <=$month ; $i++)
+
+                <div class="col-xl-4 col-md-4 col-6 mb-4">
+                <div class="card">
+                    <div class="card-header pb-0">
+                    <h5 class="card-title mb-0">{{translate('Tranaction')}}</h5>
+                    <small class="text-muted">{{translate('Month')}}:- {{$i}}</small>
+                    </div>
+                    <div id="salesLastYear"></div>
+                    <div class="card-body pt-0">
+                        @foreach ($tranaction_status as $status_name )
+                            <div class="d-flex justify-content-between align-items-center mt-3 gap-3">
+                            <h6 class="mb-0">{{$status_name}}</h6>
+
+                            <small class="text-danger">
+                                {{report_tranaction($status_name,$last_tranaction_month['date_search'][$i-1]['first_month'],$last_tranaction_month['date_search'][$i-1]['end_month'])}}
+                            </small>
+                            </div>
+
+                        @endforeach
+
+                    </div>
+                </div>
+                </div>
+                @endfor
             </div>
-            <div id="salesLastYear"></div>
-            <div class="card-body pt-0">
-              <div class="d-flex justify-content-between align-items-center mt-3 gap-3">
-                <h4 class="mb-0">{{$last_year[1]}}</h4>
-                <small class="text-danger">{{$last_year[0]}}%</small>
-              </div>
-            </div>
-          </div>
         </div>
+
 
         <!-- Sessions Last month -->
-        <div class="col-xl-2 col-md-4 col-6 mb-4">
-          <div class="card">
-            <div class="card-header pb-0">
-              <h5 class="card-title mb-0">{{translate('Complated Document')}}</h5>
-              <small class="text-muted">{{translate('Last Month')}}</small>
-            </div>
-            <div class="card-body">
-              <div id="sessionsLastMonth"></div>
-              <div class="d-flex justify-content-between align-items-center mt-3 gap-3">
-                <h4 class="mb-0">{{$last_month[1]}}</h4>
-                <small class="text-success">{{$last_month[0]}}%</small>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Total Profit -->
-        <div class="col-xl-2 col-md-4 col-6 mb-4">
-          <div class="card">
-            <div class="card-body">
-              <div class="badge p-2 bg-label-danger mb-2 rounded">
-                <i class="ti ti-chart-pie-2 ti-sm"></i>
-              </div>
-              <h5 class="card-title mb-1 pt-2">{{translate('Completed')}}</h5>
-              <small class="text-muted">{{translate('Last week')}}</small>
-              <p class="mb-2 mt-1">{{$last_week[1]}}</p>
-              <div class="pt-1">
-                <span class="badge bg-label-secondary">{{$last_week[0]}}%</span>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Total Sales -->
-        <div class="col-xl-2 col-md-4 col-6 mb-4">
-          <div class="card">
-            <div class="card-body">
-              <div class="badge p-2 bg-label-info mb-2 rounded"><i class="ti ti-chart-bar ti-md"></i></div>
-              <h5 class="card-title mb-1 pt-2">Validation</h5>
-              <small class="text-muted">Last week</small>
-              <p class="mb-2 mt-1">673</p>
-              <div class="pt-1">
-                <span class="badge bg-label-secondary">+25.2%</span>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <!-- Revenue Growth -->
         <div class="col-xl-4 col-md-8 mb-4">
@@ -82,12 +52,11 @@
               <div class="d-flex justify-content-between">
                 <div class="d-flex flex-column">
                   <div class="card-title mb-auto">
-                    <h5 class="mb-1 text-nowrap">Weekly Report</h5>
+                    <h5 class="mb-1 text-nowrap">All Total Amount</h5>
                     <small></small>
                   </div>
                   <div class="chart-statistics">
-                    <h3 class="card-title mb-1">4,673</h3>
-                    <span class="badge bg-label-success">+15.2%</span>
+                    <h3 class="card-title mb-1">{{$all_amount}}</h3>
                   </div>
                 </div>
                 <div id="revenueGrowth"></div>
@@ -101,28 +70,11 @@
           <div class="card">
             <div class="card-header d-flex justify-content-between">
               <div class="card-title mb-0">
-                <h5 class="mb-0">{{translate('Document Tracking')}}</h5>
+                <h5 class="mb-0">{{translate('Latest Tranaction')}}</h5>
                 <small class="text-muted">{{translate('Yearly Earnings Overview')}}</small>
               </div>
 
-              <ul class="nav nav-pills flex-column flex-md-row mb-4">
-                <li class="nav-item">
-                <a class="nav-link  @if($task == null) active @endif" href="{{url('home')}}"
-                    > {{translate('All')}} </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link  @if($task == '0') active @endif" href="{{url('home?task=0')}}"
-                        > {{translate('Now')}} </a>
-                    </li>
-                <li class="nav-item">
-                    <a class="nav-link @if($task == '1') active @endif" href="{{url('home?task=1')}}"> {{translate('In progress')}} </a>
-                </li>
-                 <li class="nav-item">
-                    <a class="nav-link @if($task == '2') active @endif" href="{{url('home?task=2')}}"> {{translate('Completed')}} </a>
-                </li>
 
-
-            </ul>
 
             </div>
             <div class="card-body">
@@ -130,17 +82,51 @@
                  <div class="table-responsive text-nowrap">
                     <table class="table">
                         <thead class="table-dark">
-                        <tr>
                             <th>#</th>
-                            <th>{{translate('Task Name')}}</th>
-                            <th>{{translate('priority')}}</th>
-                            <th>{{translate('Date')}}</th>
-                            <th>%</th>
-                            <th>{{translate('From')}}</th>
-                        </tr>
+                            <th>{{translate('User Name')}}</th>
+                            <th>{{translate('Amount')}}</th>
+                            <th>{{translate('Amount Vat')}}</th>
+                            <th>{{translate('Payer Payed')}}</th>
+                            <th>{{translate('Residual')}}</th>
+                            <th>{{translate('Is VAT inclusive')}}</th>
+                            <th>{{translate('Due Date')}}</th>
+                            <th>{{translate('Status')}}</th>
                         </thead>
                         <tbody class="table-border-bottom-0">
-                           
+                        @foreach ($tranactions as $tranaction)
+                                <tr>
+
+                                    <td >{{$loop->iteration}}</td>
+                                    <td>{{optional($tranaction->payer_info)->name}}</td>
+                                    <td>{{number_format($tranaction->amount,2)}}</td>
+                                    <td>{{number_format($tranaction->amount_vat,2)}}</td>
+                                    <td>{{number_format($tranaction->payments->sum('amount_paid'),2)}}</td>
+                                    <td>{{Residual_transaction($tranaction->amount_vat , $tranaction->payments->sum('amount_paid'))}}</td>
+
+                                    <td>
+                                            @if($tranaction->is_vat)
+                                            <i class="fa fa-check-circle" style="color:green"></i>
+                                            @else
+                                            <i class="fa fa-times-circle" style="color:red"></i>
+
+                                            @endif
+                                    </td>
+                                    <td>{{date('Y-m-d', strtotime($tranaction->due_date))}}</td>
+                                    <td>
+                                        <!-- this bater run by cron job because not found cpanel to access cron job make function helper to updated stats -->
+                                        {{$tranaction->status}}
+                                        @if($tranaction->status === 'paid')
+                                            <i class="fa fa-check-circle" style="color:green"></i>
+                                        @elseif($tranaction->status === 'overdue')
+                                        <i class="fa fa-times-circle" style="color:red"></i>
+                                        @else
+                                        <i class="fa fa-check-circle" style="color:orange"></i>
+                                        @endif
+                                    </td>
+
+                                </tr>
+                            @endforeach
+
 
                         </tbody>
                     </table>
@@ -157,65 +143,36 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                   <div class="card-title mb-0">
-                    <h5 class="mb-0">{{translate('Document Last Month')}}</h5>
-                    <small class="text-muted">38.4k</small>
+                    <h5 class="mb-0">{{translate('Transaction Last Year')}}</h5>
+
                   </div>
 
                 </div>
                 <div class="card-body">
                   <ul class="list-unstyled mb-0">
-                    <li class="mb-3 pb-1">
-                      <div class="d-flex align-items-start">
-                        <div class="badge bg-label-secondary p-2 me-3 rounded">
-                          <i class="ti ti-shadow ti-sm"></i>
-                        </div>
-                        <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                          <div class="me-2">
-                            <h6 class="mb-0">{{translate('Document')}}</h6>
-                            <small class="text-muted">{{translate('Now')}}</small>
-                          </div>
-                          <div class="d-flex align-items-center">
-                            <p class="mb-0">{{$last_document_month[1]}}</p>
-                            <div class="ms-3 badge bg-label-success">{{$last_document_month[0]}}%</div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="mb-3 pb-1">
-                      <div class="d-flex align-items-start">
-                        <div class="badge bg-label-secondary p-2 me-3 rounded">
-                          <i class="ti ti-globe ti-sm"></i>
-                        </div>
-                        <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                          <div class="me-2">
-                            <h6 class="mb-0">{{translate('Document')}}</h6>
-                            <small class="text-muted">{{translate('In progress')}}</small>
-                          </div>
-                          <div class="d-flex align-items-center">
-                            <p class="mb-0">{{$last_document_month[3]}}</p>
-                            <div class="ms-3 badge bg-label-success">{{$last_document_month[2]}}%</div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
+                    @foreach ($Last_tranaction_year as $key=>$Last_year)
 
-                    <li class="mb-3 pb-1">
+                        <li class="mb-3 pb-1">
                         <div class="d-flex align-items-start">
-                          <div class="badge bg-label-secondary p-2 me-3 rounded">
-                            <i class="ti ti-discount-2 ti-sm"></i>
-                          </div>
-                          <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                            <div class="badge bg-label-secondary p-2 me-3 rounded">
+                            <i class="ti ti-shadow ti-sm"></i>
+                            </div>
+                            <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                             <div class="me-2">
-                              <h6 class="mb-0">{{translate('Document')}}</h6>
-                              <small class="text-muted">{{translate('Completed')}}</small>
+                                <h6 class="mb-0">{{$key}}</h6>
                             </div>
                             <div class="d-flex align-items-center">
-                              <p class="mb-0">{{$last_document_month[5]}}</p>
-                              <div class="ms-3 badge bg-label-success">{{$last_document_month[4]}}%</div>
+
+                                    <div class="ms-3 badge bg-label-success">{{$Last_year[0]}}</div>
+
+
                             </div>
-                          </div>
+                            </div>
                         </div>
-                      </li>
+                        </li>
+
+                    @endforeach
+
 
 
                   </ul>

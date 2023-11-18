@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->date('due_date')->nullable();
             $table->integer('vat')->nullable();
-            $table->boolean('is_vat');
+            $table->boolean('is_vat')->nullable();
             $table->enum('status', ['paid', 'outstanding','overdue']);
             $table->timestamps();
         });

@@ -5,34 +5,28 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Hash;
-use App\Models\Admin;
 use App\Models\Repositories\StatisticsRepository;
-use Carbon\Carbon;
-
+use App\Models\Repositories\TransactionRepository;
 class DashboardController extends Controller
 {
     private StatisticsRepository $statisticsRepository;
+    private TransactionRepository $transactionRepository;
 
-    public function __construct(StatisticsRepository $statisticsRepository){
+    public function __construct(TransactionRepository $transactionRepository,StatisticsRepository $statisticsRepository){
         $this->statisticsRepository = $statisticsRepository;
+        $this->transactionRepository = $transactionRepository;
 
     }
     public function index(Request $request)
     {
             $class = "dashboard";
-           $last_year = $this->statisticsRepository->competed('year');
-           $last_month = $this->statisticsRepository->competed('month');
-           $last_week = $this->statisticsRepository->competed('week');
-           $last_document_month = $this->statisticsRepository->Last_document_month();
-           $task = $request->task;
-
-
-        return view('admin.home',compact('last_document_month','task','class','last_year','last_month','last_week'));
+           $last_tranaction_month = $this->statisticsRepository->Last_tranaction_month();
+           $Last_tranaction_year = $this->statisticsRepository->Last_tranaction_year();
+           $all_amount = $this->statisticsRepository->all_amount();
+           $tranaction_status = $this->statisticsRepository->tranaction_status();
+           $month = date('m');
+           $tranactions = $this->transactionRepository->latest_transactions();
+        return view('admin.home',compact('Last_tranaction_year','tranaction_status','month','all_amount','last_tranaction_month','tranactions','class'));
     }
 
     public function custom_logout(){

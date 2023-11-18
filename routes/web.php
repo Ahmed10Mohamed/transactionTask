@@ -53,6 +53,18 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
                     });
 
+                    /***** Profile *****/
+                    Route::group(['prefix' => 'Transaction', 'as' => 'Transaction.'], function () {
+                        Route::get('/', 'transactionController@index')->name('Transaction.index');
+                        Route::get('/Transaction/create', 'transactionController@create')->name('Transaction.create');
+                        Route::post('/', 'transactionController@store')->name('Transaction.store');
+                        Route::delete('/delete/{id}', 'transactionController@destroy');
+                        Route::get('/Payment/{id}', 'paymentController@payment_transaction')->name('Payment.show');
+                        Route::get('/Payment/create/{id}', 'paymentController@create_payment')->name('Payment.create');
+                        Route::post('/Payment/store', 'paymentController@paymenr_store')->name('Payment.store');
+
+                });
+
 
                 });
 

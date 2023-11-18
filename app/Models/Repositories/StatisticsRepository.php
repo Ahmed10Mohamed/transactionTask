@@ -1,99 +1,76 @@
 <?php
 
 namespace App\Models\Repositories;
-use App\Models\Admin;
-use App\Models\LicenseBox;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-use App\Models\SendSignature;
+use App\Models\Payment;
+use App\Models\Transaction;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-use App\Models\TypeResived;
-use App\Models\User;
-use DateTime;
 
 
 class StatisticsRepository
 {
 
-
-    public function competed($by):array
+    public function Last_tranaction_month():array
     {
-        $today = new DateTime();
-        $year  = (int) $today->format('Y');
-        $week  = (int) $today->format('W'); // Week of the year
-        $month  = (int) $today->format('m'); // Week of the year
-        $day   = (int) $today->format('w'); // Day of the week (0 = sunday)
-        $sameDayLastYear = new DateTime();
-        if($by  === 'year'){
-            $sameDayLastYear->setISODate($year - 1, $week, $day);
-        }elseif($by === 'week'){
-            $sameDayLastYear->setISODate($year, $week - 1, $day);
-        }elseif($by === 'month'){
-            $sameDayLastYear->setDate($year, $month - 1, $day);
-        }
-        $now = 10;
-        $progress  = 20;
-        $Completed  = 30;
-        $total = $now + $Completed + $progress;
-        if($total == 0){
-            $res = 0;
-        }else{
-            $res = $Completed / $total;
-            $res = $res * 100;
-        }
+        $month = date('m');
+        $date_search = [];
 
-        return array(number_format($res,2),number_format($Completed,2));
-    }
-    public function Last_document_month():array
-    {
-        $today = new DateTime();
-        $year  = (int) $today->format('Y');
-        $week  = (int) $today->format('W'); // Week of the year
-        $month  = (int) $today->format('m'); // Week of the year
-        $day   = (int) $today->format('w'); // Day of the week (0 = sunday)
-        $sameDayLastYear = new DateTime();
+        for ($i=1; $i <=$month ; $i++) {
 
-            $sameDayLastYear->setDate($year, $month - 1, $day);
-
-            $now = 45;
-            $progress  = 20;
-            $Completed  = 30;
-            // Now
-        $total = $now + $Completed + $progress;
-        if($total == 0){
-            $res_now = 0;
-        }else{
-            $res_now = $now / $total;
-            $res_now = $res_now * 100;
-        }
-         // progress
-         $total = $now + $Completed + $progress;
-         if($total == 0){
-             $res_progress = 0;
-         }else{
-             $res_progress = $progress / $total;
-             $res_progress = $res_progress * 100;
-         }
-          // complated
-        $total = $now + $Completed + $progress;
-        if($total == 0){
-            $res = 0;
-        }else{
-            $res = $Completed / $total;
-            $res = $res * 100;
+            $myDate =  date('Y-'.$i.'-d');
+            $first_month = Carbon::createFromFormat('Y-m-d', $myDate)
+            ->firstOfMonth()
+            ->format('Y-m-d');
+            $end_month = Carbon::createFromFormat('Y-m-d', $myDate)
+            ->endOfMonth()
+            ->format('Y-m-d');
+            $date_search[]=array('first_month'=>$first_month,'end_month'=>$end_month);
         }
         return[
-            number_format($res_now,2),
-            number_format($now,2),
-            number_format($res_progress,2),
-            number_format($progress,2),
-            number_format($res,2),
-            number_format($Completed,2),
+            'date_search'=>$date_search,
         ];
     }
+
+    public function Last_tranaction_year():array
+    {
+            $payment_paid = [];
+            $payment_outstanding = [];
+            $payment_overdue = [];
+            $myDate =  date('Y-m-d');
+            $last_year = date('Y-m-d', strtotime($myDate .' -1 year'));
+
+            $first_year = Carbon::createFromFormat('Y-m-d', $last_year)
+            ->firstOfYear()
+            ->format('Y-m-d');
+            $end_year = Carbon::createFromFormat('Y-m-d', $last_year)
+            ->endOfYear()
+            ->format('Y-m-d');
+            $paid = Transaction::where('status','paid')->whereBetween('due_date', array($first_year, $end_year))->pluck('id')->toArray();
+            $payment_paid []= Payment::whereIn('transaction_id',$paid)->sum('amount_paid');
+            $outstanding = Transaction::where('status','outstanding')->whereBetween('due_date', array($first_year, $end_year))->pluck('id')->toArray();
+            $payment_outstanding[] = Payment::whereIn('transaction_id',$outstanding)->sum('amount_paid');
+            $overdue = Transaction::where('status','overdue')->whereBetween('due_date', array($first_year, $end_year))->pluck('id')->toArray();
+            $payment_overdue[] = Payment::whereIn('transaction_id',$overdue)->sum('amount_paid');
+
+        return[
+            'paid'=>$payment_paid,
+            'outstanding'=>$payment_outstanding,
+            'overdue'=>$payment_overdue,
+        ];
+    }
+
+    public function tranaction_status(){
+        $status = [];
+        $status[] = 'paid';
+        $status[] = 'outstanding';
+        $status[] = 'overdue';
+        return $status;
+    }
+    public function all_amount(){
+        $ids = Transaction::pluck('id')->toArray();
+        $amount_paid = Payment::whereIn('transaction_id',$ids)->sum('amount_paid');
+        return $amount_paid;
+    }
+
 
 
 

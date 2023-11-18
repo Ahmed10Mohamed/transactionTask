@@ -10,9 +10,17 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      */
+    protected $commands = [
+
+        Commands\updatestatus::class,
+
+    ];
+
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->command('transaction:status')->daily();
+
     }
 
     /**

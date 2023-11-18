@@ -9,14 +9,48 @@ use App\Models\AdminPermission;
 use App\Models\Blog;
 use App\Models\Contact;
 use App\Models\Log;
+use App\Models\Payment;
 use App\Models\Property;
 use App\Models\PropertyFavourate;
 use App\Models\SendSignature;
+use App\Models\Transaction;
 use App\Models\User;
+function report_tranaction($status,$from,$to){
 
+    $ids = Transaction::where('status',$status)->whereBetween('due_date', array($from, $to))->pluck('id')->toArray();
+    $amount_paid = Payment::whereIn('transaction_id',$ids)->sum('amount_paid');
+
+    return $amount_paid;
+}
+function Residual_transaction($total_amount,$amount_paid){
+    $residual = $total_amount - $amount_paid;
+    return number_format($residual,2);
+}
+// function update_status($id,$payed){
+//     $tranaction = Transaction::findOrfail($id);
+//     $data = [];
+
+//     if($tranaction->status == 'paid'){
+//         return $tranaction->status;
+//     }elseif($tranaction->amount_vat == $payed){
+//         $data['status'] = 'paid';
+//     }elseif($tranaction->due_date > date('Y-m-d') && $tranaction->amount_vat !== $payed){
+//         $data['status'] = 'outstanding';
+//     }elseif($tranaction->due_date <= date('Y-m-d') && $tranaction->amount_vat !== $payed){
+//         $data['status'] = 'overdue';
+//     }
+//     $tranaction->update($data);
+//     return $tranaction->status;
+// }
 if(!function_exists('user')){
     function user(){
         return auth()->guard('web')->user();
+    }
+
+}
+if(!function_exists('api')){
+    function api(){
+        return auth()->guard('api')->user();
     }
 
 }
