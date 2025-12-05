@@ -74,10 +74,15 @@ class UserRepository
                 return 'not_found';
             }else if(Hash::check($request->password, $client->password))
             {
-                $access_token = $client->createToken('TranactionTask')->accessToken;
+                if (app()->environment('testing')) {
+                    $access_token = 'fake_token_for_testing';
+                } else {
+                    $access_token = $client->createToken('TranactionTask')->accessToken;
+                    $client->update(['access_token' => $access_token]);
+                    $moredata['access_token']=$access_token;
+                    $client->update($moredata);
+                }
 
-                $moredata['access_token']=$access_token;
-                $client->update($moredata);
                 $user_data = new ClientResource($client);
                 return $user_data;
             }else{

@@ -29,11 +29,20 @@ class AuthController extends Controller
 
         $data = $this->userRepository->register($request);
         if($data === 'error'){
-            return response()->json(['success'=>false,'message'=>translate('Something went wrong! Try later'),'code'=>200]);
-
+            return response()->json([
+                'success' => false,
+                'message' => translate('Something went wrong! Try later'),
+                'code' => 200
+            ]);
         }else{
-            return response()->json(['success'=>true,'data'=>$data,'code'=>200]);
+            return response()->json([
+                'success' => true,
+                'data' => $data, // ممكن يحتوي أو لا يحتوي على حقول معينة
+                'code' => 200
+            ]);
         }
+
+        
     }
     public function login(Request $request)
     {

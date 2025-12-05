@@ -20,7 +20,7 @@ class AdminSeeder extends Seeder
                 'user_name' => 'admin',
                 'phone' => '01015891836',
                 'email' => 'info@test.com',
-                'password' => bcrypt('123456'),
+                'password' => bcrypt('Admin123123'),
                 'email_verified_at'=>'2023-06-22 16:37:09',
                 'user_type'=>'admin',
                 'added_by'=>1,
